@@ -33,7 +33,7 @@ export default function AppointmentForm({
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
         defaultValues: {
-            primaryPhysician: appointment?.primaryPhysician ? appointment.primaryPhysician : "",
+            primaryPhysician: appointment?.primaryPhysician ? appointment.primaryPhysician : patient.primaryPhysician ? patient.primaryPhysician : "",
             reason: appointment?.reason ? appointment.reason : "",
             note: appointment?.note ? appointment.note : "",
             schedule: appointment?.schedule ? new Date(appointment.schedule) : new Date(),
