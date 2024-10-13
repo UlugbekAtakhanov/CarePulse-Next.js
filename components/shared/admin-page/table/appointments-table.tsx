@@ -23,7 +23,6 @@ interface DataTableProps<TData, TValue> {
 export default function AppointmentTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-    console.log(data);
     const table = useReactTable({
         data,
         columns,

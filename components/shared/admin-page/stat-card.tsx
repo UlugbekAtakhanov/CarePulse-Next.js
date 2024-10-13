@@ -12,7 +12,7 @@ const StatCard = ({ count = 0, label, icon, type }: { count: number; label: stri
             })}
         >
             <div className="flex gap-2 items-center">
-                <Image src={icon} width={32} height={32} alt="icon" />
+                <Image src={icon} width={32} height={32}  alt="icon" />
                 <h2 className="text-32-bold">{count}</h2>
             </div>
 
