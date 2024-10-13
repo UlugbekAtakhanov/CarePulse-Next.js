@@ -1,7 +1,7 @@
 import RegisterForm from "@/components/shared/forms/register-form";
+import Logo from "@/components/shared/Logo";
 import { getUser } from "@/lib/actions/patient.actions";
 import Image from "next/image";
-import Link from "next/link";
 
 const Register = async ({ params: { userId } }: SearchParamProps) => {
     const user = await getUser(userId);
@@ -11,7 +11,7 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
         <main className="flex h-screen overflow-hidden">
             <section className="h-full overflow-y-auto remove-scrollbar flex-1">
                 <div className="container flex flex-col justify-center space-y-12 py-20">
-                    <Image width={1000} height={1000} src="/assets/icons/logo-full.svg" alt="img" className="h-10 w-max " />
+                    <Logo />
 
                     <div>
                         <h1 className="text-3xl font-bold">Welcome 👋</h1>

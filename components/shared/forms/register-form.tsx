@@ -5,26 +5,41 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
-import { createUser } from "@/lib/actions/patient.actions";
-import { CreateUserSchema, UserProps } from "@/lib/schemas/user-schema";
+import { SelectItem } from "@/components/ui/select";
+import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constants";
+import { registerPatient } from "@/lib/actions/patient.actions";
+import { PatientFormSchema } from "@/lib/schemas/patient-form-schema";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import PendingButton from "../buttons/pending-button";
-import CustomField from "./form-fields/CustomField";
-import { Doctors, GenderOptions, IdentificationTypes } from "@/constants";
-import { SelectItem } from "@/components/ui/select";
-import Image from "next/image";
+import CustomField from "./form-fields/custom-field";
 
 export default function RegisterForm({ user }: { user: UserProps }) {
     const router = useRouter();
 
-    const form = useForm<z.infer<typeof CreateUserSchema>>({
-        resolver: zodResolver(CreateUserSchema),
-        defaultValues: user,
+    const form = useForm<z.infer<typeof PatientFormSchema>>({
+        resolver: zodResolver(PatientFormSchema),
+        defaultValues: { ...PatientFormDefaultValues, ...user },
     });
 
-    const onSubmit = async (values: z.infer<typeof CreateUserSchema>) => {
-        const user = await createUser(values);
-        if (user) router.push(`/patients/${user.$id}/register`);
+    const onSubmit = async (values: z.infer<typeof PatientFormSchema>) => {
+        let formData;
+
+        //* this will ensure that the file will be saved(uploaded)
+        if (values.identificationDocument && values.identificationDocument.length) {
+            const blobFile = new Blob(values.identificationDocument, { type: values.identificationDocument[0].type });
+
+            formData = new FormData();
+            formData.append("blobFile", blobFile);
+            formData.append("fileName", values.identificationDocument[0].name);
+        }
+
+        const patientData = { ...values, userId: user.$id, identificationDocument: formData };
+        const patient = await registerPatient(patientData);
+
+        // * pushing is a bit tricky. If you look at url,  /patients/[userId]/new-appointment, it is usersId's place,
+        // * but I push patient.$id, so later in new-appointment page, I can get patient data using patient.$id
+        if (patient) router.push(`/patients/${patient.$id}/new-appointment`);
     };
 
     return (
@@ -102,14 +117,14 @@ export default function RegisterForm({ user }: { user: UserProps }) {
                         name="insuranceProvider"
                         label="Insurance Provider"
                         type="text"
-                        placeholder="Blue Cross Blue Shield"
+                        placeholder="BlueCross BlueShield"
                     />
                     <CustomField
                         control={form.control}
                         name="insurancePolicyNumber"
                         label="Insurance Policy Number"
                         type="text"
-                        placeholder="AB123456789"
+                        placeholder="ABC123456789"
                     />
                 </div>
 

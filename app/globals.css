@@ -46,7 +46,7 @@
         --muted-foreground: 215 20.2% 65.1%;
         --accent: 217.2 32.6% 17.5%;
         --accent-foreground: 210 40% 98%;
-        --destructive: 0 62.8% 30.6%;
+        --destructive: 0 62.8% 50.6%;
         --destructive-foreground: 210 40% 98%;
         --border: 217.2 32.6% 17.5%;
         --input: 217.2 32.6% 17.5%;
@@ -108,12 +108,16 @@
         @apply text-[36px] leading-[40px] font-bold;
     }
 
-    .text-24-bold {
-        @apply text-[24px] leading-[28px] font-bold;
-    }
-
     .text-32-bold {
         @apply text-[32px] leading-[36px] font-bold;
+    }
+
+    .text-28-bold {
+        @apply text-[28px] leading-[32px] font-bold;
+    }
+
+    .text-24-bold {
+        @apply text-[24px] leading-[28px] font-bold;
     }
 
     .text-18-bold {
@@ -126,6 +130,10 @@
 
     .text-16-regular {
         @apply text-[16px] leading-[20px] font-normal;
+    }
+
+    .text-14-semibold {
+        @apply text-[14px] leading-[18px] font-semibold;
     }
 
     .text-14-medium {
@@ -144,9 +152,13 @@
         @apply text-[12px] leading-[16px] font-semibold;
     }
 
-    /* .green-btn {
-        @apply !bg-green-500 !text-white hover:!bg-green-600;
-    } */
+    .otp_slot {
+        @apply w-14 h-14 border text-28-bold;
+    }
+
+    .stat_card {
+        @apply flex flex-col gap-2 p-4 bg-cover bg-bottom rounded-lg overflow-hidden;
+    }
 }
 
 /* =====  REACT-DATEPICKER OVERRIDES */
@@ -203,6 +215,7 @@
     background-color: hsl(var(--secondary)) !important;
     color: var(--primary) !important;
     border-radius: 4px;
+    color: #facc151a;
 }
 
 .react-datepicker__time-list-item--selected {

@@ -9,9 +9,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import PhoneInputField from "./PhoneInputField";
+import PhoneInputField from "./phone-input-field";
 import { Textarea } from "@/components/ui/textarea";
-import FileUploadField from "./FileUploadField";
+import FileUploadField from "./file-upload-field";
 import { Checkbox } from "@/components/ui/checkbox";
 
 type CustomFieldProps = {
@@ -21,25 +21,27 @@ type CustomFieldProps = {
     label?: string;
     placeholder?: string;
     icon?: string;
+    disabled?: boolean;
+    dateFormat?: string;
     showTimeSelect?: boolean;
     options?: string[];
     children?: React.ReactNode;
 };
 
 const RenderedField = ({ field, props }: { field: any; props: CustomFieldProps }) => {
-    const { type, placeholder, icon, showTimeSelect, options, children } = props;
+    const { type, name, label, placeholder, icon, disabled, dateFormat, showTimeSelect, options, children } = props;
 
     if (type === "text" || type === "email" || type === "password") {
         return (
             <div className="flex relative">
                 {icon && <Image src={icon} width={20} height={20} alt="icon" className="absolute top-1/2 -translate-y-1/2 ml-2" />}
-                <Input type={type} {...field} placeholder={placeholder} className={cn(icon ? "!pl-9" : "")} />
+                <Input type={type} {...field} placeholder={placeholder} className={cn(icon ? "!pl-9" : "")} disabled={disabled} />
             </div>
         );
     }
 
     if (type === "textarea") {
-        return <Textarea {...field} placeholder={placeholder} />;
+        return <Textarea {...field} placeholder={placeholder} disabled={disabled} />;
     }
 
     if (type === "phone") {
@@ -53,11 +55,12 @@ const RenderedField = ({ field, props }: { field: any; props: CustomFieldProps }
                 <DatePicker
                     selected={field.value}
                     onChange={(date) => field.onChange(date)}
-                    dateFormat={"dd/MM/yyyy"}
+                    dateFormat={dateFormat ?? "dd/MM/yyyy"}
                     showTimeSelect={showTimeSelect ?? false}
                     timeInputLabel="Time:"
                     className={cn(icon ? "!pl-9 input" : "input")}
                     placeholderText={placeholder}
+                    disabled={disabled}
                 />
             </div>
         );
@@ -68,7 +71,7 @@ const RenderedField = ({ field, props }: { field: any; props: CustomFieldProps }
             <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="grid grid-cols-2 gap-6 items-center">
                 {options?.map((option) => (
                     <Label htmlFor={option} key={option} className="flex items-center space-x-2 input border-dashed cursor-pointer">
-                        <RadioGroupItem value={option} id={option} />
+                        <RadioGroupItem value={option} id={option} disabled={disabled} />
                         <span>{option}</span>
                     </Label>
                 ))}
@@ -94,9 +97,9 @@ const RenderedField = ({ field, props }: { field: any; props: CustomFieldProps }
     if (type === "checkbox") {
         return (
             <div className="flex gap-2 items-center text-muted-foreground">
-                <Checkbox id={props.name} checked={field.value} onCheckedChange={field.onChange} />
-                <label htmlFor={props.name} className="cursor-pointer ">
-                    {props.label}
+                <Checkbox id={name} checked={field.value} onCheckedChange={field.onChange} />
+                <label htmlFor={name} className="cursor-pointer ">
+                    {label}
                 </label>
             </div>
         );

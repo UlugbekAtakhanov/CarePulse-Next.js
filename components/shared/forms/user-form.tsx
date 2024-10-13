@@ -6,16 +6,16 @@ import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
 import { createUser } from "@/lib/actions/patient.actions";
-import { CreateUserSchema } from "@/lib/schemas/user-schema";
+import { UserFormSchema } from "@/lib/schemas/user-form-schema";
 import { useRouter } from "next/navigation";
 import PendingButton from "../buttons/pending-button";
-import CustomField from "./form-fields/CustomField";
+import CustomField from "./form-fields/custom-field";
 
-export default function PatientForm() {
+export default function UserForm() {
     const router = useRouter();
 
-    const form = useForm<z.infer<typeof CreateUserSchema>>({
-        resolver: zodResolver(CreateUserSchema),
+    const form = useForm<z.infer<typeof UserFormSchema>>({
+        resolver: zodResolver(UserFormSchema),
         defaultValues: {
             name: "",
             email: "",
@@ -23,7 +23,7 @@ export default function PatientForm() {
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof CreateUserSchema>) => {
+    const onSubmit = async (values: z.infer<typeof UserFormSchema>) => {
         const user = await createUser(values);
         if (user) router.push(`/patients/${user.$id}/register`);
     };

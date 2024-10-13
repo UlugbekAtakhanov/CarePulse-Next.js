@@ -8,17 +8,17 @@ declare type SearchParamProps = {
 declare type Gender = "Male" | "Female";
 declare type Status = "pending" | "scheduled" | "cancelled";
 
-// declare type CreateUserProps = {
-//     name: string;
-//     email: string;
-//     phone: string;
-// };
+declare type CreateUserProps = {
+    name: string;
+    email: string;
+    phone: string;
+};
 
-// declare interface User extends CreateUserProps {
-//     $id: string;
-// }
+declare interface UserProps extends CreateUserProps {
+    $id: string;
+}
 
-declare interface RegisterUserProps extends CreateUserProps {
+declare interface RegisterPatientProps extends CreateUserProps {
     userId: string;
     birthDate: Date;
     gender: Gender;
@@ -29,14 +29,21 @@ declare interface RegisterUserProps extends CreateUserProps {
     primaryPhysician: string;
     insuranceProvider: string;
     insurancePolicyNumber: string;
-    allergies: string | undefined;
-    currentMedication: string | undefined;
-    familyMedicalHistory: string | undefined;
-    pastMedicalHistory: string | undefined;
-    identificationType: string | undefined;
-    identificationNumber: string | undefined;
-    identificationDocument: FormData | undefined;
-    privacyConsent: boolean;
+    allergies?: string | undefined;
+    currentMedication?: string | undefined;
+    familyMedicalHistory?: string | undefined;
+    pastMedicalHistory?: string | undefined;
+    identificationType?: string | undefined;
+    identificationNumber?: string | undefined;
+    identificationDocumentId?: FormData | undefined;
+    privacyConsent?: boolean;
+    treatmentConsent?: boolean;
+    disclosureConsent?: boolean;
+}
+
+declare interface PatientProps extends RegisterPatientProps {
+    $id: string;
+    identificationDocumentUrl?: string | undefined;
 }
 
 declare type CreateAppointmentProps = {
@@ -53,5 +60,18 @@ declare type UpdateAppointmentProps = {
     appointmentId: string;
     userId: string;
     appointment: Appointment;
-    type: string;
+    status: Status;
+    cancellationReason?: string | null;
+};
+
+declare type AppointmentProps = {
+    $id: string;
+    userId: string;
+    patient: PatientProps;
+    primaryPhysician: string;
+    reason: string;
+    schedule: Date;
+    status: Status;
+    note: string | undefined;
+    cancellationReason: string | null;
 };
